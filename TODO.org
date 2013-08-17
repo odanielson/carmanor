@@ -1,0 +1,39 @@
+
+* Aggregator tool
+
+  The tool should support these features
+
+** Maintain a list of watchers
+   A watcher could for example be a directory/file reader
+   Each watcher should output scan status at regular intervals
+   to /var/log/carmanor.log
+
+** Filter chain
+** Output to elasticsearch (in logstash compatible format)
+** Simple TCP socket for interaction
+*** get status
+*** add new watchers
+*** list watchers
+*** Special parsers
+
+* Logviewer tool
+
+  Searches ES for data and displays it in a ncurses tool
+
+  Features could include
+
+  * Search from time
+  * Filter on different sources
+  * Filter on debug levels
+
+
+
+
+* Action points
+
+  1. Aggregator tool on existing files that extracts data and pushes to elasticsearch
+     a. Make autotimeparser source independent
+     b. fix handlers in handlers_to_fix
+
+  3. Add logging of scan status
+  4. tcp socket for interaction

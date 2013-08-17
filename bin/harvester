@@ -1,0 +1,38 @@
+#!/usr/bin/python
+
+"""The Harvestor is used to collect logs
+and push them on to the data storage (currently elasticsearch)
+
+Copyright (c) 2013 odanielson
+"""
+
+import sys
+import os
+
+from twisted.python import log
+from twisted.internet import reactor
+
+from carmanor.dirreader import DirReader
+from carmanor.stdoutprinter import StdoutPrinter
+from carmanor.elasticpush import ElasticPush
+from carmanor.autotimeparser import AutoTimeParser
+
+CARMANOR_VERSION = 0.1
+
+if not os.path.isdir('/var/log/carmanor'):
+    os.mkdir('/var/log/carmanor')
+
+log.startLogging(open('/var/log/carmanor/harverster.log', 'w')) # Use th
+log.msg('Carmanor v%s harvester started.' % (CARMANOR_VERSION))
+
+host = sys.argv[1]
+
+fields = {}
+
+# Interpret each command line argument as a directory to scan
+destination_chain = [AutoTimeParser(dest = [ ElasticPush(host) ])]
+for path in sys.argv[2:]:
+    log.msg('Adding scanning for %s' % (path))
+    fields[path] = DirReader(path, path, dest = destination_chain)
+
+reactor.run()
