@@ -19,10 +19,11 @@ from carmanor.autotimeparser import AutoTimeParser
 
 CARMANOR_VERSION = 0.1
 
-if not os.path.isdir('/var/log/carmanor'):
-    os.mkdir('/var/log/carmanor')
+#if not os.path.isdir('/var/log/carmanor'):
+#    os.mkdir('/var/log/carmanor')
+#log.startLogging(open('/var/log/carmanor/harverster.log', 'w'))
 
-log.startLogging(open('/var/log/carmanor/harverster.log', 'w')) # Use th
+log.startLogging(sys.stdout)
 log.msg('Carmanor v%s harvester started.' % (CARMANOR_VERSION))
 
 host = sys.argv[1]
