@@ -38,6 +38,5 @@ Take a look at the logs
 You could try using [Kibana](http://kibana.org) to take a look at the logs.
 Configure it with those options to find the data from Carmanor.
 
-Smart_index = false
-
-Default_index = 'carmanor'
+    Smart_index = false
+    Default_index = 'carmanor'
