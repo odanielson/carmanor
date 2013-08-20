@@ -4,9 +4,6 @@ import pdb
 
 from handler import Handler
 
-#TODO: This class is currently not source independent,
-#      we better fix it so that it handler the autodetection per source
-#      attribute
 
 class AutoTimeParser(Handler):
     """Tries to parse the timestamp in an event automatically."""
@@ -14,8 +11,8 @@ class AutoTimeParser(Handler):
     def __init__(self, dest=[]):
         Handler.__init__(self, dest=dest)
         self.last_stamp = 0.0
-        self.parser = self._autodetect
-        self.parsers = { "stdtime": self._parse_std_time,
+        self.parsers = {}
+        self.available_parsers = { "stdtime": self._parse_std_time,
                          "spec1": self._parse_spec1_time,
                          "vsftpd": self._parse_vsftpd_time }
 
@@ -50,12 +47,11 @@ class AutoTimeParser(Handler):
         return time.mktime(time.strptime(data[4:24], "%b %d %H:%M:%S %Y"))
 
     def _autodetect(self, data):
-        for key, parser in self.parsers.iteritems():
+        for key, parser in self.available_parsers.iteritems():
             try:
                 stamp = parser(data)
-                self.parser = parser
                 self.info("Detected %s timeformat" % (key))
-                return stamp
+                return parser
             except ValueError as e:
                 pass
         raise ValueError("Could parse time from %s" % (data))
@@ -64,7 +60,12 @@ class AutoTimeParser(Handler):
     def push(self, data):
         self.debug("Parsing time in data %s" % (data))
         try:
-            stamp = self.parser(data['raw'])
+            parser = self.parsers.get(data['source'])
+            if not parser:
+                parser = self.parsers[data['source']] = self._autodetect(
+                    data['raw'])
+
+            stamp = parser(data['raw'])
             stamp = self._format_time(self._adjust_time(stamp))
             data['timestamp'] = stamp
         except Exception as e:
