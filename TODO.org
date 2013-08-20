@@ -32,8 +32,8 @@
 
 * Action points
 
-  1. Aggregator tool on existing files that extracts data and pushes to elasticsearch
-     b. fix handlers in handlers_to_fix
+** Simple logviewer tool
 
-  2. Add logging of scan status
-  3. tcp socket for interaction
+* Possible actions
+** fix handlers in handlers_to_fix
+** tcp socket for interaction
