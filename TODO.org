@@ -16,6 +16,7 @@
 *** list watchers
 *** Special parsers
 
+
 * Logviewer tool
 
   Searches ES for data and displays it in a ncurses tool
@@ -32,8 +33,7 @@
 * Action points
 
   1. Aggregator tool on existing files that extracts data and pushes to elasticsearch
-     a. Make autotimeparser source independent
      b. fix handlers in handlers_to_fix
 
-  3. Add logging of scan status
-  4. tcp socket for interaction
+  2. Add logging of scan status
+  3. tcp socket for interaction
